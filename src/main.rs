@@ -87,8 +87,8 @@ mod tests {
         assert!(result.is_ok());
         let result = result.unwrap();
         assert_eq!(result[0].local, "3000");
-        assert_eq!(result[0].remote, "5000");
-        assert_eq!(result[1].remote, "23");
+        assert_eq!(result[0].remote, "3000");
+        assert_eq!(result[1].local, "23");
         assert_eq!(result[1].remote, "38989");
     }
 
