@@ -100,6 +100,7 @@ fn get_port_pairs<'a>(args: &Vec<&'a str>) -> Result<Vec<PortPairs<'a>>, ParsePo
 fn get_command(ip: &IPv4, port_pairs: &Vec<PortPairs>) -> Command {
     let ec2_ip = get_ec2_ip(ip).unwrap();
     let mut command = Command::new("ssh");
+    command.arg("-q");
     for pair in port_pairs.iter() {
         command.arg("-L");
         command.arg(format!("{}:{}:{}", pair.local, ec2_ip, pair.remote));
@@ -192,6 +193,7 @@ mod tests {
         let ip: IPv4 = [192, 168, 0, 1];
         let command = get_command(&ip, &vec![port1, port2]);
         let mut arguments = command.get_args();
+        assert_eq!("-q", arguments.next().unwrap().to_str().unwrap());
         assert_eq!("-L", arguments.next().unwrap().to_str().unwrap());
         assert_eq!(
             format!("3000:{}:5000", get_ec2_ip(&ip).unwrap()),
